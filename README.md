@@ -17,6 +17,7 @@ The purpose of the project is to implement small functions with TDD, Typescript 
 Write a generic routine that accepts as input:
 
 `original document`
+
 a `mutation` that describes only what needs updating in the original document
 
 and outputs
@@ -55,7 +56,7 @@ yarn test --watch
 
 ## To Improve
 
-1. Implement tests for each function with TDD.
+1. Implement tests for each function.
 2. Integration tests with Mongo.
 3. Check by unexistent attributes.
 4. Refactor to reduce the code and improve quality.
