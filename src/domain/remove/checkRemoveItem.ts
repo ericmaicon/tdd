@@ -10,7 +10,7 @@ import { Document, Response } from '../protocol';
 export default function checkRemoveItem(
   originalDocument: Document,
   mutation: Document,
-):Response {
+): Response {
   return Object
     .keys(mutation)
     .filter((key: string) => Array.isArray(mutation[key]))
@@ -18,6 +18,10 @@ export default function checkRemoveItem(
       // check in the document if the array item exists
       const originalSubDocument = originalDocument[key] as Document[];
       const subDocument = mutation[key] as Document[];
+
+      if (!originalSubDocument || !subDocument) {
+        return response;
+      }
 
       // check the removed ones (_delete = true)
       const itemsRemoved = getItemToRemove(originalSubDocument, subDocument, key);

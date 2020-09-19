@@ -21,6 +21,7 @@
   },
   "scripts": {
     "execute": "ts-node src/index.ts",
+    "lint": "eslint . --ext .ts",
     "test": "jest"
   }
 }

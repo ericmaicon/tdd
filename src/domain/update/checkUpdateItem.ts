@@ -10,7 +10,7 @@ import { getItemChanges } from '.';
 export default function checkUpdateItem(
   originalDocument: Document,
   mutation: Document,
-):Response {
+): Response {
   return Object
     .keys(mutation)
     .filter((key: string) => Array.isArray(mutation[key]))
@@ -18,6 +18,10 @@ export default function checkUpdateItem(
       // check in the document if the array item exists
       const originalSubDocument = originalDocument[key] as Document[];
       const subDocument = mutation[key] as Document[];
+
+      if (!originalSubDocument || !subDocument) {
+        return response;
+      }
 
       // check the update ones (_id exists)
       const itemsUpdated = getItemChanges(originalSubDocument, subDocument, key);

@@ -47,6 +47,6 @@ export default function getItemToInsert(
 
       return Object.assign(insertResponse, {
         [key]: tempItem,
-      })
+      });
     }, {});
 }

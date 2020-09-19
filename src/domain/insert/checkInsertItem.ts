@@ -10,7 +10,7 @@ import { getItemToInsert } from '.';
 export default function checkInsertItem(
   originalDocument: Document,
   mutation: Document,
-):Response {
+): Response {
   return Object
     .keys(mutation)
     .filter((key: string) => Array.isArray(mutation[key]))
