@@ -19,6 +19,7 @@ module.exports = {
     'import/extensions': 'off',
     'no-underscore-dangle': 'off',
     'no-use-before-define': 'off',
+    'no-console': 'off',
     semi: 'off',
   },
   settings: {
