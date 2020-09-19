@@ -3,7 +3,7 @@ import { Document, Response } from '../protocol';
 import { checkUpdateItem, getObjectDifference } from '.';
 
 /**
- * this class will get the changes and map it to a string type object
+ * this function will get the changes and map it to a string type object
  *
  * @param originalSubDocument
  * @param subDocument
