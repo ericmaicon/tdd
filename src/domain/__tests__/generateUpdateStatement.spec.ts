@@ -45,11 +45,19 @@ describe('generateUpdateStatement', () => {
     expect(output).toEqual({ $update: { 'posts.1.mentions.0.text': 'pear' } });
   });
 
-  test('Should "Add post" with the input "dd post; notice that there is no _id because the post doesnt exist yet"', () => {
+  test('Should "Add post" with the input "Add post; notice that there is no _id because the post doesnt exist yet"', () => {
     const input = { posts: [{ value: 'four' }] };
 
     const output = generateUpdateStatement(document, input);
 
     expect(output).toEqual({ $add: { posts: [{ value: 'four' }] } });
+  });
+
+  test('Should "Add mention to post with _id of 3" with the input "Add mention for post at index 2"', () => {
+    const input = { posts: [{ _id: 3, mentions: [{ text: 'banana' }] }] };
+
+    const output = generateUpdateStatement(document, input);
+
+    expect(output).toEqual({ $add: { 'posts.1.mentions': [{ text: 'banana' }] } });
   });
 });

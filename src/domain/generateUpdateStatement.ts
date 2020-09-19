@@ -22,7 +22,7 @@ export default function generateUpdateStatement(
     });
   }
 
-  const itemsToInsert = checkInsertItem(mutation);
+  const itemsToInsert = checkInsertItem(originalDocument, mutation);
   if (Object.keys(itemsToInsert).length >= 1) {
     response = Object.assign(response, {
       $add: itemsToInsert,
