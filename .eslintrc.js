@@ -1,19 +1,29 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "es2021": true
+  env: {
+    browser: true,
+    es2021: true,
+    jest: true,
   },
-  "extends": [
-    "airbnb-base"
+  extends: [
+    'airbnb-base',
   ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 12,
-    "sourceType": "module"
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: 'module',
   },
-  "plugins": [
-    "@typescript-eslint"
+  plugins: [
+    '@typescript-eslint',
   ],
-  "rules": {
-  }
+  rules: {
+    'import/extensions': 'off',
+    'no-underscore-dangle': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
+  },
 };
