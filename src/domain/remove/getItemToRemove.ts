@@ -33,7 +33,7 @@ export default function getItemToRemove(
           .keys(childrenResponse)
           .reduce((tempResponse: Response, childKey: string) => Object.assign(tempResponse, {
             [`${key}.${itemKey}.${childKey}`]: true,
-          }), {});
+          }), deleteResponse);
       }
 
       if (!item._delete) {

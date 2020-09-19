@@ -10,6 +10,7 @@ The purpose of the project is to implement small functions with TDD, Typescript 
 - [Install](#install)
 - [Usage](#usage)
 - [Tests](#tests)
+- [To Improve](#to-improve)
 
 ## Functional Requirements
 
@@ -51,3 +52,10 @@ You can also run in the watch mode:
 ```sh
 yarn test --watch
 ```
+
+## To Improve
+
+1. Implement tests for each function with TDD.
+2. Integration tests with Mongo.
+3. Check by unexistent attributes.
+4. Refactor to reduce the code and improve quality.

@@ -28,21 +28,23 @@ export default function getItemChanges(
         return updateResponse;
       }
 
+      const difference = getObjectDifference(originalItem, item);
+      const parentResponse = Object
+        .keys(difference)
+        .filter((differenceKey: string) => difference[differenceKey])
+        .reduce((tempResponse:Response, differenceKey: string) => Object.assign(tempResponse, {
+          [`${key}.${itemKey}.${differenceKey}`]: difference[differenceKey],
+        }), updateResponse);
+
       if (hasChildArray(item)) {
         const childrenResponse = checkUpdateItem(originalItem, item);
         return Object
           .keys(childrenResponse)
           .reduce((tempResponse: Response, childKey: string) => Object.assign(tempResponse, {
             [`${key}.${itemKey}.${childKey}`]: childrenResponse[childKey],
-          }),
-          {});
+          }), parentResponse);
       }
 
-      const difference = getObjectDifference(originalItem, item);
-      return Object
-        .keys(difference)
-        .reduce((tempResponse:Response, differenceKey: string) => Object.assign(tempResponse, {
-          [`${key}.${itemKey}.${differenceKey}`]: difference[differenceKey],
-        }), {});
+      return parentResponse;
     }, {});
 }

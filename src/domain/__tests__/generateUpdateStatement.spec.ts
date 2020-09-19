@@ -112,4 +112,267 @@ describe('generateUpdateStatement', () => {
       },
     });
   });
+
+  test('Should update all items', () => {
+    const input = {
+      posts: [
+        {
+          _id: 2,
+          value: 'one-changed',
+        },
+        {
+          _id: 3,
+          value: 'two-changed',
+          mentions: [
+            {
+              _id: 5,
+              text: 'apple-changed',
+            },
+            {
+              _id: 6,
+              text: 'orange-changed',
+            },
+          ],
+        },
+        {
+          _id: 4,
+          value: 'three-changed',
+        },
+      ],
+    } as Document;
+
+    const output = generateUpdateStatement(document, input);
+
+    expect(output).toEqual({
+      $update: {
+        'posts.0.value': 'one-changed',
+        'posts.1.mentions.0.text': 'apple-changed',
+        'posts.1.mentions.1.text': 'orange-changed',
+        'posts.1.value': 'two-changed',
+        'posts.2.value': 'three-changed',
+      },
+    });
+  });
+
+  test('Should update two values', () => {
+    const input = {
+      posts: [
+        {
+          _id: 3,
+          value: 'two-changed',
+          anotherValue: 'two-changed',
+          mentions: [
+            {
+              _id: 5,
+              text: 'apple-changed',
+              anotherValue: 'apple-changed',
+            },
+          ],
+        },
+      ],
+    } as Document;
+
+    const anotherDocument = {
+      _id: 1,
+      name: 'Johnny Content Creator',
+      posts: [
+        {
+          _id: 3,
+          value: 'two',
+          anotherValue: 'two',
+          mentions: [
+            {
+              _id: 5,
+              text: 'apple',
+              anotherValue: 'apple',
+            },
+          ],
+        },
+      ],
+    } as Document;
+
+    const output = generateUpdateStatement(anotherDocument, input);
+
+    expect(output).toEqual({
+      $update: {
+        'posts.0.value': 'two-changed',
+        'posts.0.anotherValue': 'two-changed',
+        'posts.0.mentions.0.text': 'apple-changed',
+        'posts.0.mentions.0.anotherValue': 'apple-changed',
+      },
+    });
+  });
+
+  test('Should add in all sub documents', () => {
+    const input = {
+      posts: [
+        {
+          _id: 2,
+          mentions: [
+            {
+              value: '2 - new mention',
+            },
+            {
+              value: '2 - new mention twice',
+            },
+          ],
+        },
+        {
+          _id: 3,
+          mentions: [
+            {
+              value: '3 - new mention',
+            },
+          ],
+        },
+        {
+          _id: 4,
+          mentions: [
+            {
+              value: '4 - new mention',
+            }],
+        },
+        {
+          value: 'new comment',
+        },
+        {
+          value: 'new comment twice',
+        },
+      ],
+    } as Document;
+    const output = generateUpdateStatement(document, input);
+
+    expect(output).toEqual({
+      $add: {
+        'posts.0.mentions': [
+          {
+            value: '2 - new mention',
+          },
+          {
+            value: '2 - new mention twice',
+          },
+        ],
+        'posts.1.mentions': [
+          {
+            value: '3 - new mention',
+          },
+        ],
+        'posts.2.mentions': [
+          {
+            value: '4 - new mention',
+          },
+        ],
+        posts: [
+          {
+            value: 'new comment',
+          },
+          {
+            value: 'new comment twice',
+          },
+        ],
+      },
+    });
+  });
+
+  test('Should add with different sub documents', () => {
+    const input = {
+      posts: [
+        {
+          _id: 2,
+          mentions: [
+            {
+              value: '2 - new mention',
+            },
+            {
+              value: '2 - new mention twice',
+            },
+          ],
+          authors: [
+            {
+              name: 'Eric',
+            },
+            {
+              name: 'John',
+            },
+          ],
+        },
+      ],
+    } as Document;
+
+    const anotherDocument = {
+      _id: 1,
+      name: 'Johnny Content Creator',
+      posts: [
+        {
+          _id: 2,
+          value: 'one',
+          mentions: [],
+          authors: [],
+        },
+      ],
+    } as Document;
+
+    const output = generateUpdateStatement(anotherDocument, input);
+
+    expect(output).toEqual({
+      $add: {
+        'posts.0.mentions': [
+          {
+            value: '2 - new mention',
+          },
+          {
+            value: '2 - new mention twice',
+          },
+        ],
+        'posts.0.authors': [
+          {
+            name: 'Eric',
+          },
+          {
+            name: 'John',
+          },
+        ],
+      },
+    });
+  });
+
+  test('Should remove all data', () => {
+    const input = {
+      posts: [
+        {
+          _id: 2,
+          _delete: true,
+        },
+        {
+          _id: 3,
+          value: 'two',
+          mentions: [
+            {
+              _id: 5,
+              _delete: true,
+            },
+            {
+              _id: 6,
+              _delete: true,
+            },
+          ],
+        },
+        {
+          _id: 4,
+          _delete: true,
+        },
+      ],
+    } as Document;
+
+    const output = generateUpdateStatement(document, input);
+
+    expect(output).toEqual({
+      $remove: {
+        'posts.0': true,
+        'posts.1.mentions.0': true,
+        'posts.1.mentions.1': true,
+        'posts.2': true,
+      },
+    });
+  });
 });

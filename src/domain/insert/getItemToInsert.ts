@@ -33,15 +33,20 @@ export default function getItemToInsert(
           .keys(childrenResponse)
           .reduce((tempResponse: Document, childKey: string) => Object.assign(tempResponse, {
             [`${key}.${itemKey}.${childKey}`]: childrenResponse[childKey],
-          }), {});
+          }), insertResponse);
       }
 
       if (item._id) {
-        return insertResponse
+        return insertResponse;
+      }
+
+      let tempItem = [item];
+      if (Array.isArray(insertResponse[key])) {
+        tempItem = (insertResponse[key] as Document[]).concat(item);
       }
 
       return Object.assign(insertResponse, {
-        [key]: [item],
+        [key]: tempItem,
       })
     }, {});
 }
