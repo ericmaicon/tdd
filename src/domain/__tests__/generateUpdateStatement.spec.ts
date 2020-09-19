@@ -35,4 +35,14 @@ describe('generateUpdateStatement', () => {
       },
     });
   });
+
+  test('Should return "Update text field in mention with _id of 5, for post with _id of 2" with the input "Update text field in mention at index 1, for post at index 0"', () => {
+    const input = { posts: [{ _id: 3, mentions: [{ _id: 5, text: 'pear' }] }] };
+
+    const output = generateUpdateStatement(document, input);
+
+    // console.log(output);
+
+    expect(output).toEqual({ $update: { 'posts.1.mentions.0.text': 'pear' } });
+  });
 });

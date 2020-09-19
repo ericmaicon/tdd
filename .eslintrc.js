@@ -18,6 +18,7 @@ module.exports = {
   rules: {
     'import/extensions': 'off',
     'no-underscore-dangle': 'off',
+    'no-use-before-define': 'off',
   },
   settings: {
     'import/resolver': {
