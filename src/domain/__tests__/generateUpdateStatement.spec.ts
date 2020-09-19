@@ -23,9 +23,13 @@ const document = {
           text: 'orange',
         },
       ],
-    }, {
-      _id: 4, value: 'three', mentions: [],
-    }],
+    },
+    {
+      _id: 4,
+      value: 'three',
+      mentions: [],
+    },
+  ],
 } as Document;
 
 describe('generateUpdateStatement', () => {
@@ -79,5 +83,33 @@ describe('generateUpdateStatement', () => {
     const output = generateUpdateStatement(document, input);
 
     expect(output).toEqual({ $remove: { 'posts.1.mentions.1': true } });
+  });
+
+  test('Should Update, Add and Remove in single statement', () => {
+    const input = {
+      posts: [
+        { _id: 2, value: 'too' },
+        { value: 'four' },
+        { _id: 4, _delete: true },
+      ],
+    } as Document;
+
+    const output = generateUpdateStatement(document, input);
+
+    expect(output).toEqual({
+      $update: {
+        'posts.0.value': 'too',
+      },
+      $add: {
+        posts: [
+          {
+            value: 'four',
+          },
+        ],
+      },
+      $remove: {
+        'posts.2': true,
+      },
+    });
   });
 });
