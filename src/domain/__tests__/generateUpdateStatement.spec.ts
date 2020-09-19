@@ -1,4 +1,5 @@
-import generateUpdateStatement, { Document } from '../generateUpdateStatement';
+import { generateUpdateStatement } from '..';
+import { Document } from '../protocol';
 
 const document = {
   _id: 1,
@@ -40,8 +41,6 @@ describe('generateUpdateStatement', () => {
     const input = { posts: [{ _id: 3, mentions: [{ _id: 5, text: 'pear' }] }] };
 
     const output = generateUpdateStatement(document, input);
-
-    // console.log(output);
 
     expect(output).toEqual({ $update: { 'posts.1.mentions.0.text': 'pear' } });
   });
