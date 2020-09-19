@@ -1,0 +1,17 @@
+{
+  "name": "document",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Eric Maicon <eric@ericmaicon.com.br>",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.3.0"
+  }
+}
