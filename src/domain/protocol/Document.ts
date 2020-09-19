@@ -1,3 +1,3 @@
 export default interface Document {
-  [key: string]: Document[] | string | number;
+  [key: string]: Document[] | string | number | boolean;
 }

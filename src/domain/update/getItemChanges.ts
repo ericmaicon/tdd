@@ -16,6 +16,7 @@ export default function getItemChanges(
 ): Response {
   return subDocument
     .filter((item: Document) => item._id)
+    .filter((item: Document) => !item._delete)
     .reduce((updateResponse: Response, item: Document) => {
       const originalItem = originalSubDocument
         .find((tempItem: Document) => tempItem._id === item._id);

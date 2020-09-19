@@ -1,5 +1,6 @@
 import { checkInsertItem } from './insert';
 import { Document } from './protocol';
+import { checkRemoveItem } from './remove';
 import { checkUpdateItem } from './update';
 
 /**
@@ -26,6 +27,13 @@ export default function generateUpdateStatement(
   if (Object.keys(itemsToInsert).length >= 1) {
     response = Object.assign(response, {
       $add: itemsToInsert,
+    });
+  }
+
+  const itemsToRemove = checkRemoveItem(originalDocument, mutation);
+  if (Object.keys(itemsToRemove).length >= 1) {
+    response = Object.assign(response, {
+      $remove: itemsToRemove,
     });
   }
 

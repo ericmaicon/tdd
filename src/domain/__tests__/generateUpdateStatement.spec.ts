@@ -60,4 +60,12 @@ describe('generateUpdateStatement', () => {
 
     expect(output).toEqual({ $add: { 'posts.1.mentions': [{ text: 'banana' }] } });
   });
+
+  test('Should "Remove post at index 0" with the input "Remove post with _id of 2"', () => {
+    const input = { posts: [{ _id: 2, _delete: true }] };
+
+    const output = generateUpdateStatement(document, input);
+
+    expect(output).toEqual({ $remove: { 'posts.0': true } });
+  });
 });
