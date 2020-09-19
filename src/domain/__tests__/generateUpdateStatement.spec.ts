@@ -17,8 +17,12 @@ const document = {
         {
           _id: 5,
           text: 'apple',
-        }, {
-        }],
+        },
+        {
+          _id: 6,
+          text: 'orange',
+        },
+      ],
     }, {
       _id: 4, value: 'three', mentions: [],
     }],
@@ -67,5 +71,13 @@ describe('generateUpdateStatement', () => {
     const output = generateUpdateStatement(document, input);
 
     expect(output).toEqual({ $remove: { 'posts.0': true } });
+  });
+
+  test('Should "Remove mention with _id of 6, for post with _id of 3" with the input "Remove mention at index 1, for post at index 1"', () => {
+    const input = { posts: [{ _id: 3, mentions: [{ _id: 6, _delete: true }] }] };
+
+    const output = generateUpdateStatement(document, input);
+
+    expect(output).toEqual({ $remove: { 'posts.1.mentions.1': true } });
   });
 });

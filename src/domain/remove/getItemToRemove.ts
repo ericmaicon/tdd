@@ -1,4 +1,6 @@
+import hasChildArray from '../hasChildArray';
 import { Document, Response } from '../protocol';
+import checkRemoveItem from './checkRemoveItem';
 
 /**
  * this function will get the remove flag items and map it to a string type object
@@ -7,13 +9,12 @@ import { Document, Response } from '../protocol';
  * @param subDocument
  * @param key
  */
-export default function getItemChanges(
+export default function getItemToRemove(
   originalSubDocument: Document[],
   subDocument: Document[],
   key: string,
 ): Response {
   return subDocument
-    .filter((item: Document) => item._delete === true)
     .reduce((deleteResponse: Response, item: Document) => {
       const originalItem = originalSubDocument
         .find((tempItem: Document) => tempItem._id === item._id);
@@ -22,6 +23,20 @@ export default function getItemChanges(
         .findIndex((tempItem: Document) => tempItem._id === item._id);
 
       if (!originalItem) {
+        return deleteResponse;
+      }
+
+      if (hasChildArray(item)) {
+        const childrenResponse = checkRemoveItem(originalItem, item);
+
+        return Object
+          .keys(childrenResponse)
+          .reduce((tempResponse: Response, childKey: string) => Object.assign(tempResponse, {
+            [`${key}.${itemKey}.${childKey}`]: true,
+          }), {});
+      }
+
+      if (!item._delete) {
         return deleteResponse;
       }
 
